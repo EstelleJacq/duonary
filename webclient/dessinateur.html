@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Écran Dessinateur</title>
+    <link rel="stylesheet" href="dessinateur.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://use.typekit.net/yel6xap.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img src="Duolingo.png" class="avatar" />
+        <div class="info">
+          <p class="role">DESSINATEUR</p>
+        </div>
+      </header>
+
+      <div class="word-box">
+        <input type="text" value="Pomme" disabled />
+        <div class="timer-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="drawCanvas" width="300" height="300"></canvas>
+
+        <div class="tools">
+          <button id="penTool">✏️</button>
+          <button id="eraserTool">🧽</button>
+        </div>
+
+        <div class="colors">
+          <button
+            class="color"
+            data-color="#e084f0"
+            style="background: #e084f0"
+          ></button>
+          <button
+            class="color"
+            data-color="#00aaff"
+            style="background: #00aaff"
+          ></button>
+          <button
+            class="color"
+            data-color="#55bb33"
+            style="background: #55bb33"
+          ></button>
+          <button
+            class="color"
+            data-color="#f9e864"
+            style="background: #f9e864"
+          ></button>
+          <button
+            class="color"
+            data-color="#faaa2d"
+            style="background: #faaa2d"
+          ></button>
+          <button
+            class="color"
+            data-color="#ff4d4d"
+            style="background: #ff4d4d"
+          ></button>
+          <button
+            class="color"
+            data-color="#444"
+            style="background: #444"
+          ></button>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      const canvas = document.getElementById("drawCanvas");
+      const ctx = canvas.getContext("2d");
+      const socket = io();
+
+      let drawing = false;
+      let currentColor = "#000";
+      let erasing = false;
+
+      function getX(e) {
+        return e.touches
+          ? e.touches[0].clientX - canvas.offsetLeft
+          : e.clientX - canvas.offsetLeft;
+      }
+
+      function getY(e) {
+        return e.touches
+          ? e.touches[0].clientY - canvas.offsetTop
+          : e.clientY - canvas.offsetTop;
+      }
+
+      function startDraw(e) {
+        drawing = true;
+        ctx.beginPath();
+        const x = getX(e);
+        const y = getY(e);
+        ctx.moveTo(x, y);
+      }
+
+      function draw(e) {
+        if (!drawing) return;
+        e.preventDefault();
+        const x = getX(e);
+        const y = getY(e);
+
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = erasing ? "#fff" : currentColor;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        socket.emit("drawing", {
+          x,
+          y,
+          color: ctx.strokeStyle,
+          erasing,
+        });
+        console.log("ÉMIS PAR LE DESSINATEUR :", {
+          x,
+          y,
+          color: ctx.strokeStyle,
+          erasing,
+        });
+      }
+
+      function stopDraw() {
+        drawing = false;
+        ctx.beginPath();
+        socket.emit("resetPath");
+        console.log("RESET envoyé");
+      }
+
+      socket.on("drawing", (data) => {
+        ctx.strokeStyle = data.color;
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+        ctx.lineTo(data.x, data.y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(data.x, data.y);
+      });
+
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("touchstart", startDraw);
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("touchmove", draw);
+      canvas.addEventListener("mouseup", stopDraw);
+      canvas.addEventListener("mouseleave", stopDraw);
+      canvas.addEventListener("touchend", stopDraw);
+
+      document.querySelectorAll(".color").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          currentColor = btn.dataset.color;
+          erasing = false;
+        });
+      });
+
+      document.getElementById("penTool").onclick = () => (erasing = false);
+      document.getElementById("eraserTool").onclick = () => (erasing = true);
+
+      const ROUND_DURATION = 30;
+      let duration = ROUND_DURATION;
+      let elapsed = 0;
+      const progress = document.getElementById("progress");
+
+
+      socket.on("newDrawing", (data) => {
+        console.log("NEW DRAWING :", data);
+        document.querySelector(".word-box input").value = data.drawingName;
+
+        // reset timer
+        duration = ROUND_DURATION;
+        elapsed = 0;
+
+        // reset canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      });
+
+      socket.on("time", (data) => {
+        console.log("⏱️ Temps restant :", data);
+        progress.style.width = `${(data / ROUND_DURATION) * 100}%`;
+      });
+
+
+    </script>
+  </body>
+</html>

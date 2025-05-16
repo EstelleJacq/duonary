@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Équipe Béa</title>
+    <link rel="stylesheet" href="https://use.typekit.net/yel6xap.css" />
+    <link rel="stylesheet" href="stylelily.css">  
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+  <body class="bodybea">
+    <div class="container">
+      <div class="header">
+        <img src="bea.png" alt="Personnage" class="avatar" />
+        <h1 class="h1bea">ÉQUIPE BEA</h1>
+        <button class="close-button">✕</button>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+      <img src="timer.png" alt="clock-icon" />
+    </div>
+
+    <div id="answers" class="button-grid"></div>
+
+    <script>      
+      const socket = io();
+      const answersEl = document.querySelector("#answers");
+
+
+      fetch("db.json").then((res) => res.json()).then((db) => {
+      let drawingWord = null;
+
+      function displayAnswers(drawingName) {
+        console.log(drawingName)
+
+        drawingWord = drawingName;
+        answersEl.innerHTML = "";
+
+        const drawing = db.drawings[drawingName];
+        const answers = drawing.correct.concat(drawing.incorrect);
+
+        for (let i = 0; i < 50; i++) {
+          answers.sort((a, b) => {
+            return Math.random() > 0.5 ? -1 : 1;
+          });
+        }
+
+        answers.forEach((el) => {
+          console.log(`${el}:${drawing.correct.includes(el)}`);
+
+          const btn = document.createElement("button");
+          btn.textContent = el;
+          btn.addEventListener("click", answer);
+          answersEl.appendChild(btn);
+        });
+
+
+        console.log(answers);
+      }
+
+      function answer(event) {
+        console.log(event.target.textContent);
+
+        const drawing = db.drawings[drawingWord];
+        const correct_answers = drawing.correct;
+        if(correct_answers.includes(event.target.textContent)){
+          event.target.classList.add("button-success");
+          console.log("success");
+        }else{
+          event.target.classList.add("button-error");
+          console.log("error");
+        }
+      }
+
+      // TODO quand le serveur me dit qu'on dessine un truc, on le display
+      // et puis on redemarre le timer aussi
+      displayAnswers("pomme");
+
+      // Timer progress (20s)
+      const ROUND_DURATION = 20;
+      let duration = ROUND_DURATION;
+      let elapsed = 0;
+      const progress = document.getElementById("progress");
+
+      
+        socket.on("time", (data) => {
+        console.log("⏱️ Temps restant :", data);
+        progress.style.width = `${(data / ROUND_DURATION) * 100}%`;
+      });
+
+      socket.on("newDrawing", (data) => {
+        console.log("Nouveau dessin :", data);
+       //document.querySelector(".word-box input").value = data.drawingName;
+
+        // reset timer
+        duration = ROUND_DURATION;
+        elapsed = 0;
+
+        //refresh answers
+        displayAnswers(data.drawingName);
+      });
+      });
+    </script>
+  </body>
+</html>

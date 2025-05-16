@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Grand Écran - Affichage Dessin</title>
+<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.typekit.net/yel6xap.css" />
+
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Zone centrale équipe Lily -->
+      <div class="team">
+        <div class="content">
+          <canvas
+            id="displayCanvas"
+            width="400"
+            height="400"
+            class="drawing"
+          ></canvas>
+        </div>
+      </div>
+
+      <!-- <div class="scoreboard">
+      <div class="score">
+        <span>🔷 12</span> | <span>🔷 06</span>
+      </div>
+    </div>  -->
+
+      <div class="scoreboard">
+        <div class="timer">
+          <img src="timer.png" class="clock" />
+          <span id="countdown">00:20</span>
+        </div>
+      </div>
+
+      <div class="qr-block qr-right">
+        <img src="qr-translationbea.png" alt="QR Béa" class="qr" />
+        <p>Rejoindre l'équipe<br />de Béa</p>
+      </div>
+      <img src="bea.png" class="character character-right" alt="" />
+    </div>
+
+    <div class="qr-block qr-left">
+      <img src="qr-translationlily.png" alt="QR Lily" class="qr" />
+      <p>Rejoindre l'équipe<br />de Lily</p>
+      <img src="lily.png" class="character character-left" alt="" />
+    </div>
+
+    <script type="module">
+      const db = await (await fetch("db.json")).json();
+      const drawingNames = Object.keys(db.drawings);
+
+      const canvas = document.getElementById("displayCanvas");
+      const ctx = canvas.getContext("2d");
+      const socket = io();
+
+      // Initialise le point précédent pour pouvoir tracer
+      let isFirstPoint = true;
+      let lastX = 0,
+        lastY = 0;
+
+      socket.on("drawing", (data) => {
+        console.log("📥 Données reçues sur le GRAND ÉCRAN :", data);
+        ctx.strokeStyle = data.color;
+        ctx.lineWidth = 5;
+        ctx.lineCap = "round";
+
+        if (isFirstPoint) {
+          lastX = data.x;
+          lastY = data.y;
+          isFirstPoint = false;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(data.x, data.y);
+        ctx.stroke();
+
+        lastX = data.x;
+        lastY = data.y;
+      });
+
+      socket.on("resetPath", () => {
+        console.log("↩️ Reset reçu sur le GRAND ÉCRAN");
+        isFirstPoint = true;
+      });
+
+      let time = 20;
+      const countdown = document.getElementById("countdown");
+
+      const interval = setInterval(() => {
+        time--;
+        countdown.textContent = `00:${time < 10 ? "0" + time : time}`;
+        socket.emit("time", time);
+        if (time <= 0) {
+          time = 20;
+          countdown.textContent = countdown.textContent = `00:${
+            time < 10 ? "0" + time : time
+          }`;
+
+          const newDrawingName =
+            drawingNames[Math.trunc(drawingNames.length * Math.random())];
+
+          socket.emit("newDrawing", { drawingName: newDrawingName });
+                  // reset canvas
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

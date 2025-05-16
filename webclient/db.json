@@ -1,0 +1,44 @@
+{
+    "drawings": {
+      "pomme": {
+        "correct": ["manzana", "mela", "tuffah", "pingguo", "apple", "apfel"],
+        "incorrect": ["brot", "baum", "kitab", "peixe", "perro", "vogel"]
+      },
+      "couette" : {
+        "correct" :["edredón", "duvet", "yǔróngbèi", "lihaf", "dekbed"],
+        "incorrect" : ["chat","maison","edredón", "kitab","brot","vogel","shāichá "]
+      },
+      "pêche" : {
+        "correct" :["melocotón","peach","khawkh","táozi"],
+        "incorrect" :["baum ","house","cane","pain","brot","peixe","perro","conejo"]
+      },
+      "carnet" : {
+        "correct" :["cuaderno","daftar","bǐjìběn" ],
+        "incorrect":["kartoffel","tsuki","Çay","Kissa", "Mangga","Sneg","Cerveza","Cukor","Cha"]
+      },
+      "éponge" : {
+        "correct" :["sponge", "hǎimián", "isfanja"],
+        "incorrect":["Schule", "Silla", "Słońce", "Sahra ", "Snake", "Sankofa", "Satu", "Sapato", "Schnitzel"]
+        },
+        "gorille" : {
+        "correct" :["gorilla", "dà xīngxīng", "ghurila"],
+        "incorrect":["Guten","Gamba", "Gō", "Gospodin", "Gading", "Gyetemény", "Göz", "Gorący ", "Grzmot"]
+        },
+        "oiseau" : {
+        "correct" :["bird","pájaro","niǎo","ta'ir","Vogel"],
+       "incorrect":["Oma","Okashi", "Olho", "Onnea", "Oud", "Opon", "Orosz"]
+        },
+        "langue" : {
+        "correct" :["lengua", "shétou", "lisan","sprache"],
+        "incorrect":["Leben","Luna","Leden","Luft","Lámpara","Lapis","Löv", "lira"]
+        },
+        "dent" : {
+        "correct" :["tooth","diente ","yáchǐ","sinn", "Zahn","Zub","ha"],
+        "incorrect":["Dach","dia","Düşünce","Dromedario","Donne"]
+        },
+        "gourde" : {
+        "correct" :["cantimplora ", "shuǐpíng","zujaja ma"],
+        "incorrect":["gato","Gâteau","Göl","Gorka","gorilla","Grazia","Grün","Gâteau","Grande"]
+        }
+    }
+  }

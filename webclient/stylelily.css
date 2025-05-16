@@ -1,0 +1,161 @@
+/* Reset de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .body  {
+    font-family: "din-2014-rounded-variable", sans-serif;
+    font-variation-settings: "wght" 400;
+    background-color: #f3dffd;
+    padding: 20px;
+  }
+
+  .bodybea{
+    font-family: "din-2014-rounded-variable", sans-serif;
+    font-variation-settings: "wght" 400;
+    background-color: #fdf4cd;
+    padding: 20px;
+    height: 100vh;
+  }
+
+  .h1bea{
+    font-family: "din-2014-rounded-variable", sans-serif;
+    font-variation-settings: "wght" 400;
+    color: #373631;
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 393px;
+    margin: 0 auto;
+  }
+  
+  /* En-tête */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .avatar {
+    width: 50px;
+    height: auto;
+  }
+  
+  .h1 {
+    color: #403D44;
+    font-size: 18px;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  /* Bouton de fermeture */
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Barre de progression */
+  .progress-section {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+  }
+
+  .timer-bar {
+    width: 80%;
+    background: #eee;
+    height: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: relative;
+  }
+  
+  .progress {
+    height: 100%;
+    background: #00aaff;
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  .progress-bar-container {
+    background-color: white;
+    border-radius: 20px;
+    flex: 1;
+    height: 16px;
+    position: relative;
+  }
+  
+  .progress-bar {
+    background-color: #00AFFF;
+    width: 60%;
+    height: 100%;
+    border-radius: 20px;
+  }
+  
+  /* Icône horloge */
+  .clock-icon {
+    font-size: 20px;
+  }
+  
+  /* Grille de boutons */
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+
+  .button-success{
+    background-color: #50A130 !important;
+    border: 2px solid #0E8A00 !important;
+    border-radius: 13px;
+    padding: 10px 0;
+    font-weight: 700;
+    color: #ffffff !important;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.1s ease;
+  }
+
+  .button-error {
+    background-color: #ED0C0C !important;
+    border: 2px solid #AA0909 !important;
+    border-radius: 13px;
+    padding: 10px 0;
+    font-weight: 700;
+    color: #ffffff !important;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.1s ease;
+  }
+
+  .button-grid button {
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0; /* bord gris clair */
+    border-radius: 13px; /* coins très arrondis */
+    padding: 10px 0;
+    font-weight: 700;
+    color: #00AFFF;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.1s ease;
+  }
+  
+  .button-grid button:active {
+    transform: scale(0.97);
+  }
+
+  

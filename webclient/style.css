@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+font-family: "din-2014-rounded-variable", sans-serif;
+font-variation-settings: "wght" 400;
+  background-color: #c8e8ff ;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+.team {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.team-lily {
+  background-color: #e6e1f7;
+}
+
+.team-bea {
+  background-color: #fdf0dd;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.qr {
+  width: 11.25rem;
+}
+
+.drawing {
+  width: 400px;
+  background-color: white;
+}
+
+.scoreboard {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 10px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.character {
+  width: 12.5rem;
+  height: 22rem;
+  position: fixed;
+  bottom: 0rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  animation: bounce 1s infinite alternate;
+  animation-timing-function: ease-in-out;
+  transition: transform 0.3s ease-in-out;
+}
+
+.character-left {
+  left: 10px;
+    height: 20rem;
+    width: 11rem;
+
+}
+
+.character-right {
+  right: 10px;
+}
+
+.qr-block {
+  position: absolute;
+  top: 12px;
+  text-align: center;
+  width: 120px;
+}
+
+.qr-left {
+  left: 30px;
+}
+
+.qr-right {
+
+  right: 90px;
+}
+
+
